@@ -8,6 +8,9 @@
   <li *ngFor="let curso of cursosAsyncList">
     {{ curso.id }}. {{ curso.nome }}
     <button (click)="editarCurso(curso.id)">Editar</button>
+    <button (click)="excluirCurso(curso.id)">Excluir</button>
+    <br>
+    <br>
   </li>
 </ul>
 

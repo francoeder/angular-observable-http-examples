@@ -112,4 +112,16 @@ export class AppComponent implements OnInit {
       });
   }
 
+  excluirCurso(id: number) {
+    this.cursosService.delete(id)
+      .subscribe(
+        success => {
+          console.log('O curso foi excluído com sucesso');
+          this.listarCursosAsync();
+        },
+        error => console.log('Ocorreu um erro na tentativa de excluir o curso', error),
+        () => console.log('Fim do fluxo de exclusão de curso.')
+      )
+  }
+
 }
