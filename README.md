@@ -1,3 +1,12 @@
+# FIRST OF ALL!
+Install json-server:
+`npm install -g json-server`
+
+You need to initiate json-server watching to db.json file:
+`json-server --watch backend-mock/db.json`
+
+Now you can continue reading =D
+
 # HttpExamples
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.2.
