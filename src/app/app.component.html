@@ -1,9 +1,21 @@
 <button (click)="listarCursosAsync()">Listar Cursos (Async - Unsubscribe Automático)</button>
-<ul>
+<ul *ngIf="cursosAsync$ | async; else loading">
   <li *ngFor="let curso of cursosAsync$ | async">{{ curso.id }}. {{ curso.nome }}</li>
 </ul>
 
 <button (click)="listarCursos()">Listar Cursos (Unsubscribe Manual)</button>
-<ul>
+<ul *ngIf="cursos.length > 0; else loading">
   <li *ngFor="let curso of cursos">{{ curso.id }}. {{ curso.nome }}</li>
 </ul>
+
+
+<ng-template #loading>
+  <div *ngIf="error$ | async; else stillLoading">
+    <span>Erro ao carregar os cursos...</span>
+  </div>
+  <ng-template #stillLoading>
+    <br>
+    <span>Carregando Cursos...</span>
+    <br>
+  </ng-template>
+</ng-template>
