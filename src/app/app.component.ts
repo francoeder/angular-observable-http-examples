@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EMPTY, Observable, Subject } from 'rxjs';
 import { catchError, take } from 'rxjs/operators';
 import { Curso } from './interfaces/curso';
@@ -17,11 +18,17 @@ export class AppComponent implements OnInit {
 
   error$ = new Subject<boolean>();
 
-  constructor(private cursosService: CursosService) {
+  form: FormGroup;
+  formSubmitted = false;
+
+  constructor(
+    private cursosService: CursosService,
+    private fb: FormBuilder) {
     
   }
 
   ngOnInit() {
+    this.inicializaFormulario();
   }
 
   listarCursosAsync() {
@@ -53,6 +60,33 @@ export class AppComponent implements OnInit {
     console.log(error);
     this.error$.next(true);
     return EMPTY;
+  }
+
+  inicializaFormulario() {
+    this.form = this.fb.group({
+      id: [null],
+      nome: ['', Validators.compose([
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(50),
+      ])],
+    })
+  };
+
+  salvarCurso() {
+    this.formSubmitted = true
+    if (this.form.valid) {
+      this.cursosService.create(this.form.value)
+        .subscribe(
+          success => { 
+            console.log('Curso salvo com sucesso!');
+            this.form.reset();
+          },
+          error => console.log('Ocorreu um erro ao tentar salvar o curso...', error),
+          () => console.log('Fim do fluxo de salvar curso.')
+        );
+      this.formSubmitted = false;
+    }
   }
 
 }

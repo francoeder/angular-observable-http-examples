@@ -1,6 +1,13 @@
-<button (click)="listarCursosAsync()">Listar Cursos (Async - Unsubscribe Automático)</button>
+<!-- GET -->
+<h1>GET - Listar Cursos</h1>
+
+<button (click)="listarCursosAsync()">
+  Listar Cursos (Async - Unsubscribe Automático)
+</button>
 <ul *ngIf="cursosAsync$ | async; else loading">
-  <li *ngFor="let curso of cursosAsync$ | async">{{ curso.id }}. {{ curso.nome }}</li>
+  <li *ngFor="let curso of cursosAsync$ | async">
+    {{ curso.id }}. {{ curso.nome }}
+  </li>
 </ul>
 
 <button (click)="listarCursos()">Listar Cursos (Unsubscribe Manual)</button>
@@ -8,14 +15,33 @@
   <li *ngFor="let curso of cursos">{{ curso.id }}. {{ curso.nome }}</li>
 </ul>
 
-
 <ng-template #loading>
   <div *ngIf="error$ | async; else stillLoading">
     <span>Erro ao carregar os cursos...</span>
   </div>
   <ng-template #stillLoading>
-    <br>
+    <br />
     <span>Carregando Cursos...</span>
-    <br>
+    <br />
   </ng-template>
 </ng-template>
+
+<br>
+<br>
+
+<!-- POST -->
+<h1>POST - Salvar Curso</h1>
+
+<form [formGroup]="form">
+  <label for="nome">Nome do Curso </label>
+  <input
+    type="text"
+    id="nome"
+    placeholder="Digite o nome do curso"
+    formControlName="nome"
+  />
+  <small *ngIf="!form.valid && formSubmitted">Esse campo precisa ter entre 3 e 50 caracteres</small>
+  <div>
+    <button (click)="salvarCurso()">Salvar Curso</button>
+  </div>
+</form>
