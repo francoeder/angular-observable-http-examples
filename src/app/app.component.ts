@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EMPTY, Observable, Subject } from 'rxjs';
-import { catchError, take } from 'rxjs/operators';
+import { catchError, concatMap, map, take } from 'rxjs/operators';
 import { Curso } from './interfaces/curso';
 import { CursosService } from './services/cursos.service';
 
@@ -75,7 +75,20 @@ export class AppComponent implements OnInit {
 
   salvarCurso() {
     this.formSubmitted = true
-    if (this.form.valid) {
+    if (this.form.valid && this.form.value.id) {
+      // update
+      this.cursosService.update(this.form.value)
+        .subscribe(
+          success => { 
+            console.log('Curso editado com sucesso!');
+            this.form.reset();
+          },
+          error => console.log('Ocorreu um erro ao tentar editar o curso...', error),
+          () => console.log('Fim do fluxo de edição do curso.')
+        );
+      this.formSubmitted = false;
+    } else {
+      // create
       this.cursosService.create(this.form.value)
         .subscribe(
           success => { 
@@ -87,6 +100,16 @@ export class AppComponent implements OnInit {
         );
       this.formSubmitted = false;
     }
+  }
+
+  editarCurso(id: number) {
+    this.cursosService.get(id)
+      .subscribe((curso) => {
+          this.form.patchValue({
+            id: curso.id,
+            nome: curso.nome,
+          })
+      });
   }
 
 }

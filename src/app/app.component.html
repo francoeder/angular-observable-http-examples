@@ -4,9 +4,10 @@
 <button (click)="listarCursosAsync()">
   Listar Cursos (Async - Unsubscribe Automático)
 </button>
-<ul *ngIf="cursosAsync$ | async; else loading">
-  <li *ngFor="let curso of cursosAsync$ | async">
+<ul *ngIf="cursosAsync$ | async as cursosAsyncList; else loading">
+  <li *ngFor="let curso of cursosAsyncList">
     {{ curso.id }}. {{ curso.nome }}
+    <button (click)="editarCurso(curso.id)">Editar</button>
   </li>
 </ul>
 
@@ -29,7 +30,7 @@
 <br>
 <br>
 
-<!-- POST -->
+<!-- POST & PUT -->
 <h1>POST - Salvar Curso</h1>
 
 <form [formGroup]="form">
